@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
-  <title>ROG Theme Redirect</title>
-  <meta name="theme-color" content="#000000">
-</head>
-<body>
-  <p>正在為你開啟 ASUS Themes ...</p>
-  <script>
-    setTimeout(function() {
-      window.location.href = "asusthemes://themes/detail?id=th01112223001";
-    }, 1200); // 延遲 1.2 秒
-  </script>
-</body>
-</html>
+<script>
+  // 先立即嘗試
+  window.location.href = "asusthemes://themes/detail?id=th01112223001";
+  // 1 秒後再補一次，確保冷啟能吃到
+  setTimeout(function() {
+    window.location.href = "asusthemes://themes/detail?id=th01112223001";
+  }, 1000);
+</script>
