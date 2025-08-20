@@ -1,0 +1,9 @@
+{
+  "name": "ROG Theme Redirect",
+  "short_name": "ROGTheme",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Redirect to ASUS Theme Store package"
+}
