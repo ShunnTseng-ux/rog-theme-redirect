@@ -1,8 +1,33 @@
-<script>
-  // 先立即嘗試
-  window.location.href = "asusthemes://themes/detail?id=th01112223001";
-  // 1 秒後再補一次，確保冷啟能吃到
-  setTimeout(function() {
-    window.location.href = "asusthemes://themes/detail?id=th01112223001";
-  }, 1000);
-</script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>ROG Theme Redirect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+  <h2 id="message">正在檢查裝置...</h2>
+
+  <script>
+    // 從網址 query string 取得 id，例如 ?id=th01112223001
+    const urlParams = new URLSearchParams(window.location.search);
+    const themeId = urlParams.get("id");
+
+    if (!themeId) {
+      document.getElementById("message").innerText = "錯誤：缺少主題包 ID";
+    } else {
+      const themeLink = "asusthemes://themes/detail?id=" + themeId;
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+      if (/ROG Phone/i.test(ua)) {
+        document.getElementById("message").innerText = "正在開啟主題包...";
+        setTimeout(() => {
+          window.location.href = themeLink;
+        }, 1000); // 延遲 1 秒避免冷啟失敗
+      } else {
+        document.getElementById("message").innerText = "此內容僅限 ROG Phone 用戶使用";
+      }
+    }
+  </script>
+</body>
+</html>
