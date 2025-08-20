@@ -3,16 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>ROG Theme Redirect</title>
-  <!-- 這行會讓瀏覽器知道要載入 PWA 的 manifest -->
-  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#000000">
 </head>
 <body>
   <p>正在為你開啟 ASUS Themes ...</p>
 
+  <a id="themeLink" href="asusthemes://themes/detail?id=th0111222300" style="display:none;">
+    Open Theme
+  </a>
+
   <script>
-    // 這裡填入你要跳轉的 asusthemes URL
-    window.location.href = "asusthemes://themes/detail?id=th01112223001";
+    var themeUrl = "asusthemes://themes/detail?id=th0111222300";
+    var intentUrl = "intent://themes/detail?id=th0111222300#Intent;scheme=asusthemes;package=com.asus.themes;end";
+
+    // 嘗試用 location.replace
+    try {
+      window.location.replace(themeUrl);
+    } catch (e) {
+      // 如果失敗，觸發隱藏 a 標籤
+      document.getElementById("themeLink").click();
+    }
+
+    // 保險：2 秒後再 fallback 用 intent
+    setTimeout(function() {
+      window.location.href = intentUrl;
+    }, 2000);
   </script>
 </body>
 </html>
