@@ -1,32 +1,44 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>ROG Theme Redirect</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>ROG Phone 專屬主題</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body {margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#0b0f14;color:#e7eef7;font-family:system-ui,-apple-system,Segoe UI,Roboto,PingFang TC,Noto Sans TC,Helvetica,Arial}
+    h2 {font-size:clamp(18px,4vw,28px);text-align:center}
+  </style>
 </head>
-<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
-  <h2 id="message">正在檢查裝置...</h2>
+<body>
+  <h2 id="msg">正在檢查裝置…</h2>
 
   <script>
-    // 從網址 query string 取得 id，例如 ?id=th01112223001
-    const urlParams = new URLSearchParams(window.location.search);
-    const themeId = urlParams.get("id");
+    // 讀取 ?id=xxx；沒有就用你常用的預設 ID
+    const id = new URL(location.href).searchParams.get('id') || 'th01112223001';
+    const deep = `asusthemes://themes/detail?id=${encodeURIComponent(id)}`;
 
-    if (!themeId) {
-      document.getElementById("message").innerText = "錯誤：缺少主題包 ID";
+    // 放寬裝置偵測：Android + (ASUS/ROG/Zenfone/AI#### 型號)
+    const ua = (navigator.userAgent || '').toLowerCase();
+    const isAndroid = ua.includes('android');
+    const isAsusish = /(asus|rog|zenfone|ai\d{4})/i.test(ua);
+
+    const msg = document.getElementById('msg');
+
+    function openDeepLink() {
+      // 熱啟：先嘗試一次
+      try { location.replace(deep); } catch (e) {}
+      // 冷啟：0.9 秒後補一次，讓 App 有時間初始化
+      setTimeout(() => { location.href = deep; }, 900);
+    }
+
+    if (isAndroid && isAsusish) {
+      msg.textContent = '正在開啟主題包…';
+      openDeepLink();
+
+      // 若瀏覽器需要手勢：點畫面再重試（不改視覺）
+      document.body.addEventListener('click', openDeepLink);
     } else {
-      const themeLink = "asusthemes://themes/detail?id=" + themeId;
-      const ua = navigator.userAgent || navigator.vendor || window.opera;
-
-      if (/ROG Phone/i.test(ua)) {
-        document.getElementById("message").innerText = "正在開啟主題包...";
-        setTimeout(() => {
-          window.location.href = themeLink;
-        }, 1000); // 延遲 1 秒避免冷啟失敗
-      } else {
-        document.getElementById("message").innerText = "此內容僅限 ROG Phone 用戶使用";
-      }
+      msg.textContent = '此內容僅限 ROG Phone 用戶使用';
     }
   </script>
 </body>
